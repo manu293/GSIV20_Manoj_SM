@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 
 // local imports
+import { time_convert } from "../../helpers/utility";
 
 const useStyles = makeStyles({
   root: {
@@ -21,60 +22,68 @@ const useStyles = makeStyles({
     bottom: 0,
     left: 0,
     width: "100%"
+  },
+  commonStyles: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
   }
 });
 
-const MovieCard = () => {
+const MovieCard = props => {
   const classes = useStyles();
-
+  const { movieData } = props;
+  console.log("The props are: ", movieData);
   return (
     <Card className={classes.root}>
       <CardContent className={classes.cardContent}>
         <Grid container spacing={1}>
           <Grid item xs={12} sm={6}>
             <Typography
-              className={classes.title}
+              className={classes.commonStyles}
               color="textSecondary"
               gutterBottom
             >
-              Movie Title
+              {movieData.title}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography
-              className={classes.time}
+              className={classes.commonStyles}
               color="textSecondary"
               gutterBottom
             >
-              HH:MM
+              {time_convert(movieData.runtime)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography
-              className={classes.time}
+              className={classes.commonStyles}
               color="textSecondary"
               gutterBottom
             >
-              Genre
+              {movieData.getGenres[0]}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography
-              className={classes.time}
+              className={classes.commonStyles}
               color="textSecondary"
               gutterBottom
             >
-              Rating
+              {movieData.vote_average}
             </Typography>
           </Grid>
         </Grid>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
-          Cast
-        </Typography>
+        <Grid item xs={12} sm={12}>
+          <Typography
+            className={classes.commonStyles}
+            color="textSecondary"
+            gutterBottom
+          >
+            {movieData.getCast.map(cast => cast.charName)}
+          </Typography>
+        </Grid>
       </CardContent>
     </Card>
   );

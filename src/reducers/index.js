@@ -5,5 +5,5 @@ import { combineReducers } from 'redux';
 import movies from './getMovieData';
 
 export default combineReducers({
-    movies
+    movies,
 })

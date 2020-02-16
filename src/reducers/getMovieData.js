@@ -4,7 +4,7 @@
 import { GET_MOVIE_DATA } from "../helpers/types";
 
 const INITIAL_STATE = {
-  movieData: []
+  movieData: null
 };
 
 export default (state = INITIAL_STATE, action) => {

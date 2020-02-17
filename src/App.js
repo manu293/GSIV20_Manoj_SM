@@ -4,7 +4,7 @@ import { Router, Route, Switch } from "react-router-dom";
 
 // local imports
 import { history } from "./helpers/history";
-import { Home } from "./pages";
+import { Home, MovieDetails } from "./pages";
 import './App.css';
 
 const App = () => (
@@ -13,6 +13,7 @@ const App = () => (
       <div>
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/details/:movieId" exact component={MovieDetails} />
         </Switch>
       </div>
     </Router>

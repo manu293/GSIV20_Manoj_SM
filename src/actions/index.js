@@ -3,16 +3,16 @@ import axios from "axios";
 import _ from "lodash";
 
 // local imports
-import { GET_MOVIE_DATA } from "../helpers/types";
+import { GET_MOVIE_DATA , SEARCH_TERM} from "../helpers/types";
 import { API_KEY, LANGAUGE } from "../helpers/constants";
 
-export const getItemListData = () => async dispatch => {
+export const getItemListData = (pageNum) => async dispatch => {
   let response = {};
   const config = {
     params: {
       api_key: API_KEY,
       language: LANGAUGE,
-      page: 1
+      page: pageNum
     }
   };
   const upcomingMovies = await axios
@@ -37,7 +37,6 @@ export const getItemListData = () => async dispatch => {
       });
   });
   Promise.all(getMovieDetail).then(function(results) {
-    console.log("The resulst is : ", results)
     response = results.map(res => {
       const {
         id,
@@ -75,3 +74,10 @@ export const getItemListData = () => async dispatch => {
     });
   });
 };
+
+export const getSearchTerm = (searchTerm) => {
+  return {
+    type: SEARCH_TERM,
+    payload: searchTerm
+  }
+}

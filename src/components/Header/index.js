@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // imports
 import React from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
@@ -11,8 +12,11 @@ import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import HomeIcon from "@material-ui/icons/Home";
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 // local imports
+import {getSearchTerm} from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -76,11 +80,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Header = () => {
+const Header = props => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const { compName } = props;
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -139,25 +144,38 @@ const Header = () => {
     </Menu>
   );
 
+  React.useEffect(() => {
+    props.getSearchTerm(searchTerm)
+  }, [searchTerm]);
+  
   return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+          {compName === "MovieDetails" ? (
+            <div>
+              <p>Movie Details</p>
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
+          ) : (
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+                inputProps={{ "aria-label": "search" }}
+                onChange= {(e) => setSearchTerm(e.target.value)} 
+              />
+            </div>
+          )}
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Link to="/" style={{color: '#4A4A4A'}}>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -168,6 +186,7 @@ const Header = () => {
             >
               <HomeIcon />
             </IconButton>
+            </Link>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -188,4 +207,6 @@ const Header = () => {
   );
 };
 
-export { Header };
+const cHeader = connect(null ,{getSearchTerm})(Header)
+
+export { cHeader as Header };

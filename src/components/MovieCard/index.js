@@ -5,6 +5,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import {Link} from 'react-router-dom';
 
 // local imports
 import { time_convert } from "../../helpers/utility";
@@ -33,8 +34,8 @@ const useStyles = makeStyles({
 const MovieCard = props => {
   const classes = useStyles();
   const { movieData } = props;
-  console.log("The props are: ", movieData);
-  return (
+  return ( 
+    <Link to={{ pathname: `details/${movieData.id}`, state: { selectedData: movieData} }}>
     <Card className={classes.root}>
       <CardContent className={classes.cardContent}>
         <Grid container spacing={1}>
@@ -86,6 +87,7 @@ const MovieCard = props => {
         </Grid>
       </CardContent>
     </Card>
+    </Link>
   );
 };
 export { MovieCard };

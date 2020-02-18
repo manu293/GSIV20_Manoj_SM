@@ -33,9 +33,7 @@ function usePrevious(value) {
 
 function renderMovies(classes, homeMovieData, searchTerm){
   if(homeMovieData !== null){
-    // console.log("The home movie data is: ", homeMovieData)
     if(searchTerm === ''){
-      // let newMovieSet = new Set(homeMovieData)
        return(
         <Grid className={classes.root} container spacing={1}>
         {homeMovieData.map(ele => {
@@ -52,7 +50,6 @@ function renderMovies(classes, homeMovieData, searchTerm){
       let filteredMovies = homeMovieData.filter(movie =>
         movie.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      console.log("The home data is: ", filteredMovies)
       return(
         <Grid className={classes.root} container spacing={1}>
         {filteredMovies.map(ele => {
@@ -77,8 +74,6 @@ const Home = props => {
   const previousMovieData = usePrevious(homeMovieData);
   const { movieData, searchTerm } = props.movieList;
 
-  console.log("The moveie data is: ", movieData)
-
   useEffect(() => {
     props.getItemListData(pageNum);
   }, []);
@@ -87,10 +82,12 @@ const Home = props => {
     setIsFetching(true);
   }
 
+  console.log("The prev movie data is: ",previousMovieData )
+
   useEffect(() => {
     if (movieData !== null) {
       if(previousMovieData === undefined || previousMovieData.length === 0) {
-        setHomeMovieData(movieData);
+        setHomeMovieData([...new Set([...movieData])]);
       }
     } 
     const updatedPageNum = pageNum + 1;
@@ -99,7 +96,7 @@ const Home = props => {
     setPageNum(updatedPageNum);
     if(previousMovieData !== undefined ) {
       setIsFetching(false);
-      setHomeMovieData([...previousMovieData, ...movieData]);
+      setHomeMovieData(prevMovies => {return [...new Set([...prevMovies , ...movieData])]});
     }
   }, [isFetching, movieData]);
 
